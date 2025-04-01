@@ -1,0 +1,124 @@
+import java.util.Scanner;
+
+class Kalkulator {
+    public static int tambah(int a, int b) {
+        return a + b;
+    }
+
+    public static int kurang(int a, int b) {
+        return a - b;
+    }
+
+    public int kali(int a, int b) {
+        return a * b;
+    }
+
+    public double bagi(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Pembagian oleh nol tidak diperbolehkan.");
+        }
+        return (double) a / b;
+    }
+
+    public void sederhana(int pembilang, int penyebut) {
+        int gcd = gcd(pembilang, penyebut);
+        pembilang /= gcd;
+        penyebut /= gcd;
+        System.out.println("Hasil penyederhanaan: " + pembilang + "/" + penyebut);
+    }
+
+    private int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+}
+
+class Jaket {
+    private static final int HARGA_A = 100000;
+    private static final int HARGA_B = 125000;
+    private static final int HARGA_C = 175000;
+
+    public int hitungHarga(char tipe, int jumlah) {
+        int harga;
+        switch (tipe) {
+            case 'A':
+                harga = (jumlah > 100) ? 95000 : HARGA_A;
+                break;
+            case 'B':
+                harga = (jumlah > 100) ? 120000 : HARGA_B;
+                break;
+            case 'C':
+                harga = (jumlah > 100) ? 160000 : HARGA_C;
+                break;
+            default:
+                System.out.println("Tipe jaket tidak valid.");
+                return 0;
+        }
+        return harga * jumlah;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Kalkulator kalkulator = new Kalkulator();
+        Jaket jaket = new Jaket();
+        boolean lanjut = true;
+
+        while (lanjut) {
+            System.out.println("\n=== MENU UTAMA ===");
+            System.out.println("1. Kalkulator");
+            System.out.println("2. Hitung Harga Jaket");
+            System.out.println("3. Keluar");
+            System.out.print("Pilih menu: ");
+            int pilihan = scanner.nextInt();
+
+            switch (pilihan) {
+                case 1:
+                    System.out.println("\n=== KALKULATOR ===");
+                    System.out.print("Masukkan angka pertama: ");
+                    int angka1 = scanner.nextInt();
+                    System.out.print("Masukkan angka kedua: ");
+                    int angka2 = scanner.nextInt();
+
+                    System.out.println("Penjumlahan: " + Kalkulator.tambah(angka1, angka2));
+                    System.out.println("Pengurangan: " + Kalkulator.kurang(angka1, angka2));
+                    System.out.println("Perkalian: " + kalkulator.kali(angka1, angka2));
+                    System.out.println("Pembagian: " + kalkulator.bagi(angka1, angka2));
+
+                    System.out.print("\nIngin menyederhanakan pecahan? (y/n): ");
+                    char jawab = scanner.next().charAt(0);
+                    if (jawab == 'y' || jawab == 'Y') {
+                        System.out.print("Masukkan pembilang: ");
+                        int pembilang = scanner.nextInt();
+                        System.out.print("Masukkan penyebut: ");
+                        int penyebut = scanner.nextInt();
+                        kalkulator.sederhana(pembilang, penyebut);
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("\n=== HITUNG HARGA JAKET ===");
+                    System.out.print("Masukkan tipe jaket (A/B/C): ");
+                    char tipeJaket = scanner.next().toUpperCase().charAt(0);
+                    System.out.print("Masukkan jumlah jaket: ");
+                    int jumlah = scanner.nextInt();
+                    int totalHarga = jaket.hitungHarga(tipeJaket, jumlah);
+                    if (totalHarga > 0) {
+                        System.out.println("Total harga Jaket " + tipeJaket + " (" + jumlah + " buah): Rp " + totalHarga);
+                    }
+                    break;
+
+                case 3:
+                    lanjut = false;
+                    System.out.println("Terima kasih telah menggunakan program ini!");
+                    break;
+
+                default:
+                    System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+            }
+        }
+
+        scanner.close();
+    }
+}
